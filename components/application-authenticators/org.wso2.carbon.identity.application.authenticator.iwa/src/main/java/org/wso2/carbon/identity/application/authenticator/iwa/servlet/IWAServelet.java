@@ -58,8 +58,8 @@ public class IWAServelet extends HttpServlet {
     public static final String PRINCIPAL_SESSION_KEY = NegotiateSecurityFilter.class
             .getName() + ".PRINCIPAL";
     private static Log log = LogFactory.getLog(IWAServelet.class);
-    private PrincipalFormat principalFormat = PrincipalFormat.fqn;
-    private PrincipalFormat roleFormat = PrincipalFormat.fqn;
+    private PrincipalFormat principalFormat = PrincipalFormat.FQN;
+    private PrincipalFormat roleFormat = PrincipalFormat.FQN;
     private SecurityFilterProviderCollection providers = null;
     private IWindowsAuthProvider auth;
     private boolean allowGuestLogin = true;

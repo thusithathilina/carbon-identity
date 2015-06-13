@@ -17,1219 +17,1214 @@
 */
 package org.wso2.carbon.identity.oauth2.token.handlers.grant.iwa.ntlm.util;
 
-
-import org.apache.catalina.*;
+import org.apache.catalina.AccessLog;
+import org.apache.catalina.Authenticator;
+import org.apache.catalina.Cluster;
+import org.apache.catalina.Container;
+import org.apache.catalina.ContainerListener;
+import org.apache.catalina.Context;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.LifecycleState;
+import org.apache.catalina.Loader;
+import org.apache.catalina.Manager;
+import org.apache.catalina.Pipeline;
+import org.apache.catalina.Realm;
+import org.apache.catalina.ThreadBindingListener;
+import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
-import org.apache.catalina.core.ApplicationServletRegistration;
-import org.apache.catalina.deploy.*;
-import org.apache.catalina.util.CharsetMapper;
+import org.apache.catalina.deploy.NamingResourcesImpl;
 import org.apache.juli.logging.Log;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.JarScanner;
-import org.apache.tomcat.util.http.mapper.Mapper;
+import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
+import org.apache.tomcat.util.descriptor.web.ErrorPage;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
+import org.apache.tomcat.util.descriptor.web.LoginConfig;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.apache.tomcat.util.http.CookieProcessor;
 
 import javax.management.ObjectName;
-import javax.naming.directory.DirContext;
-import javax.servlet.*;
+import javax.servlet.ServletContainerInitializer;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletSecurityElement;
 import javax.servlet.descriptor.JspConfigDescriptor;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
+import java.io.File;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-
 public class SimpleContext implements Context {
 
-    private Realm _realm = null;
-    private ServletContext _servletContext = new SimpleServletContext();
+	private Realm _realm = null;
+	private ServletContext _servletContext = new SimpleServletContext();
 
-    @Override
-    public void addApplicationListener(String arg0) {
+	@Override
+	public boolean getAllowCasualMultipartParsing() {
+		return false;
+	}
 
-    }
+	@Override
+	public void setAllowCasualMultipartParsing(boolean b) {
 
-    @Override
-    public void addApplicationParameter(ApplicationParameter arg0) {
+	}
 
-    }
+	@Override
+	public Object[] getApplicationEventListeners() {
+		return new Object[0];
+	}
 
-    @Override
-    public void addConstraint(SecurityConstraint arg0) {
+	@Override
+	public void setApplicationEventListeners(Object[] objects) {
 
-    }
+	}
 
-    @Override
-    public void addErrorPage(ErrorPage arg0) {
+	@Override
+	public Object[] getApplicationLifecycleListeners() {
+		return new Object[0];
+	}
 
-    }
+	@Override
+	public void setApplicationLifecycleListeners(Object[] objects) {
 
-    @Override
-    public void addFilterDef(FilterDef arg0) {
+	}
 
-    }
+	@Override
+	public String getCharset(Locale locale) {
+		return null;
+	}
 
-    @Override
-    public void addFilterMap(FilterMap arg0) {
+	@Override
+	public URL getConfigFile() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setConfigFile(URL url) {
 
-    @Override
-    public void addFilterMapBefore(FilterMap filterMap) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void addInstanceListener(String arg0) {
+	@Override
+	public boolean getConfigured() {
+		return false;
+	}
 
-    }
+	@Override
+	public void setConfigured(boolean b) {
 
-    //@Override
-    public void addJspMapping(String arg0) {
+	}
 
-    }
+	@Override
+	public boolean getCookies() {
+		return false;
+	}
 
-    @Override
-    public void addLocaleEncodingMappingParameter(String arg0, String arg1) {
+	@Override
+	public void setCookies(boolean b) {
 
-    }
+	}
 
-    @Override
-    public void addMimeMapping(String arg0, String arg1) {
+	@Override
+	public String getSessionCookieName() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setSessionCookieName(String s) {
 
-    @Override
-    public void addParameter(String arg0, String arg1) {
+	}
 
-    }
+	@Override
+	public boolean getUseHttpOnly() {
+		return false;
+	}
 
-    @Override
-    public void addRoleMapping(String arg0, String arg1) {
+	@Override
+	public void setUseHttpOnly(boolean b) {
 
-    }
+	}
 
-    @Override
-    public void addSecurityRole(String arg0) {
+	@Override
+	public String getSessionCookieDomain() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setSessionCookieDomain(String s) {
 
-    @Override
-    public void addServletMapping(String arg0, String arg1) {
+	}
 
-    }
+	@Override
+	public String getSessionCookiePath() {
+		return null;
+	}
 
-    @Override
-    public void addServletMapping(String s, String s2, boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void setSessionCookiePath(String s) {
 
+	}
 
-    public void addTaglib(String arg0, String arg1) {
+	@Override
+	public boolean getSessionCookiePathUsesTrailingSlash() {
+		return false;
+	}
 
-    }
+	@Override
+	public void setSessionCookiePathUsesTrailingSlash(boolean b) {
 
-    @Override
-    public void addWatchedResource(String arg0) {
+	}
 
-    }
+	@Override
+	public boolean getCrossContext() {
+		return false;
+	}
 
-    @Override
-    public void addWelcomeFile(String arg0) {
+	@Override
+	public String getAltDDName() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setAltDDName(String s) {
 
-    @Override
-    public void addWrapperLifecycle(String arg0) {
+	}
 
-    }
-
-    @Override
-    public void addWrapperListener(String arg0) {
-
-    }
-
-    @Override
-    public Wrapper createWrapper() {
-        return null;
-    }
-
-    @Override
-    public String[] findApplicationListeners() {
-        return new String[0];
-    }
-
-    @Override
-    public ApplicationParameter[] findApplicationParameters() {
-        return new ApplicationParameter[0];
-    }
-
-    @Override
-    public SecurityConstraint[] findConstraints() {
-        return new SecurityConstraint[0];
-    }
-
-    @Override
-    public ErrorPage findErrorPage(int arg0) {
-        return null;
-    }
-
-    @Override
-    public ErrorPage findErrorPage(String arg0) {
-        return null;
-    }
-
-    @Override
-    public ErrorPage[] findErrorPages() {
-        return new ErrorPage[0];
-    }
-
-    @Override
-    public FilterDef findFilterDef(String arg0) {
-        return null;
-    }
-
-    @Override
-    public FilterDef[] findFilterDefs() {
-        return new FilterDef[0];
-    }
-
-    @Override
-    public FilterMap[] findFilterMaps() {
-        return new FilterMap[0];
-    }
-
-    @Override
-    public String[] findInstanceListeners() {
-        return new String[0];
-    }
-
-    @Override
-    public String findMimeMapping(String arg0) {
-        return null;
-    }
-
-    @Override
-    public String[] findMimeMappings() {
-        return new String[0];
-    }
-
-    @Override
-    public String findParameter(String arg0) {
-        return null;
-    }
-
-    @Override
-    public String[] findParameters() {
-        return new String[0];
-    }
-
-    @Override
-    public String findRoleMapping(String arg0) {
-        return null;
-    }
-
-    @Override
-    public boolean findSecurityRole(String arg0) {
-        return false;
-    }
-
-    @Override
-    public String[] findSecurityRoles() {
-        return new String[0];
-    }
-
-    @Override
-    public String findServletMapping(String arg0) {
-        return null;
-    }
-
-    @Override
-    public String[] findServletMappings() {
-        return new String[0];
-    }
-
-    @Override
-    public String findStatusPage(int arg0) {
-        return null;
-    }
-
-    @Override
-    public int[] findStatusPages() {
-        return new int[0];
-    }
-
-    //@Override
-    public String findTaglib(String arg0) {
-        return null;
-    }
-
-    // @Override
-    public String[] findTaglibs() {
-        return new String[0];
-    }
-
-    @Override
-    public String[] findWatchedResources() {
-        return new String[0];
-    }
-
-    @Override
-    public boolean findWelcomeFile(String arg0) {
-        return false;
-    }
-
-    @Override
-    public String[] findWelcomeFiles() {
-        return new String[0];
-    }
-
-    @Override
-    public String[] findWrapperLifecycles() {
-        return new String[0];
-    }
-
-    @Override
-    public String[] findWrapperListeners() {
-        return new String[0];
-    }
-
-    @Override
-    public boolean fireRequestInitEvent(ServletRequest servletRequest) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean fireRequestDestroyEvent(ServletRequest servletRequest) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getAltDDName() {
-        return null;
-    }
-
-    @Override
-    public void setAltDDName(String arg0) {
-
-    }
-
-    @Override
-    public boolean getAllowCasualMultipartParsing() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setAllowCasualMultipartParsing(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Object[] getApplicationEventListeners() {
-        return new Object[0];
-    }
-
-    @Override
-    public void setApplicationEventListeners(Object[] arg0) {
-
-    }
-
-    @Override
-    public Object[] getApplicationLifecycleListeners() {
-        return new Object[0];
-    }
-
-    @Override
-    public void setApplicationLifecycleListeners(Object[] arg0) {
-
-    }
-
-    @Override
-    public boolean getAvailable() {
-        return false;
-    }
-
-    //@Override
-    public void setAvailable(boolean arg0) {
-
-    }
-
-    @Override
-    public CharsetMapper getCharsetMapper() {
-        return null;
-    }
-
-    @Override
-    public void setCharsetMapper(CharsetMapper arg0) {
-
-    }
-
-    @Override
-    public URL getConfigFile() {
-        return null;
-    }
-
-    //@Override
-    public void setConfigFile(String arg0) {
-
-    }
-
-    @Override
-    public void setConfigFile(URL url) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean getConfigured() {
-        return false;
-    }
-
-    @Override
-    public void setConfigured(boolean arg0) {
-
-    }
+	@Override
+	public void setCrossContext(boolean b) {
 
-    @Override
-    public boolean getCookies() {
-        return false;
-    }
+	}
 
-    @Override
-    public void setCookies(boolean arg0) {
+	@Override
+	public boolean getDenyUncoveredHttpMethods() {
+		return false;
+	}
 
-    }
+	@Override
+	public void setDenyUncoveredHttpMethods(boolean b) {
 
-    @Override
-    public boolean getCrossContext() {
-        return false;
-    }
+	}
 
-    @Override
-    public void setCrossContext(boolean arg0) {
+	@Override
+	public String getDisplayName() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setDisplayName(String s) {
 
-    @Override
-    public String getDisplayName() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setDisplayName(String arg0) {
+	@Override
+	public boolean getDistributable() {
+		return false;
+	}
 
-    }
+	@Override
+	public void setDistributable(boolean b) {
 
-    @Override
-    public boolean getDistributable() {
-        return false;
-    }
+	}
 
-    @Override
-    public void setDistributable(boolean arg0) {
+	@Override
+	public String getDocBase() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setDocBase(String s) {
 
-    @Override
-    public String getDocBase() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setDocBase(String arg0) {
+	@Override
+	public String getEncodedPath() {
+		return null;
+	}
 
-    }
+	@Override
+	public boolean getIgnoreAnnotations() {
+		return false;
+	}
 
-    @Override
-    public String getEncodedPath() {
-        return null;
-    }
+	@Override
+	public void setIgnoreAnnotations(boolean b) {
 
-    @Override
-    public boolean getIgnoreAnnotations() {
-        return false;
-    }
+	}
 
-    @Override
-    public void setIgnoreAnnotations(boolean arg0) {
+	@Override
+	public LoginConfig getLoginConfig() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setLoginConfig(LoginConfig loginConfig) {
 
-    @Override
-    public LoginConfig getLoginConfig() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setLoginConfig(LoginConfig arg0) {
+	@Override
+	public NamingResourcesImpl getNamingResources() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setNamingResources(NamingResourcesImpl namingResources) {
 
-    @Override
-    public Mapper getMapper() {
-        return null;
-    }
+	}
 
-    @Override
-    public NamingResources getNamingResources() {
-        return null;
-    }
+	@Override
+	public String getPath() {
+		return null;
+	}
 
-    @Override
-    public void setNamingResources(NamingResources arg0) {
+	@Override
+	public void setPath(String s) {
 
-    }
+	}
 
-    @Override
-    public boolean getOverride() {
-        return false;
-    }
+	@Override
+	public String getPublicId() {
+		return null;
+	}
 
-    @Override
-    public void setOverride(boolean arg0) {
+	@Override
+	public void setPublicId(String s) {
 
-    }
+	}
 
-    @Override
-    public String getPath() {
-        return null;
-    }
+	@Override
+	public boolean getReloadable() {
+		return false;
+	}
 
-    @Override
-    public void setPath(String arg0) {
+	@Override
+	public void setReloadable(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getPrivileged() {
-        return false;
-    }
+	@Override
+	public boolean getOverride() {
+		return false;
+	}
 
-    @Override
-    public void setPrivileged(boolean arg0) {
+	@Override
+	public void setOverride(boolean b) {
 
-    }
+	}
 
-    @Override
-    public String getPublicId() {
-        return null;
-    }
+	@Override
+	public boolean getPrivileged() {
+		return false;
+	}
 
-    @Override
-    public void setPublicId(String arg0) {
+	@Override
+	public void setPrivileged(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getReloadable() {
-        return false;
-    }
+	@Override
+	public ServletContext getServletContext() {
+		return _servletContext;
+	}
 
-    @Override
-    public void setReloadable(boolean arg0) {
+	@Override
+	public int getSessionTimeout() {
+		return 0;
+	}
 
-    }
+	@Override
+	public void setSessionTimeout(int i) {
 
-    @Override
-    public ServletContext getServletContext() {
-        return _servletContext;
-    }
+	}
 
-    @Override
-    public int getSessionTimeout() {
-        return 0;
-    }
+	@Override
+	public boolean getSwallowAbortedUploads() {
+		return false;
+	}
 
-    @Override
-    public void setSessionTimeout(int arg0) {
+	@Override
+	public void setSwallowAbortedUploads(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getSwallowOutput() {
-        return false;
-    }
+	@Override
+	public boolean getSwallowOutput() {
+		return false;
+	}
 
-    @Override
-    public void setSwallowOutput(boolean arg0) {
+	@Override
+	public void setSwallowOutput(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getTldNamespaceAware() {
-        return false;
-    }
+	@Override
+	public String getWrapperClass() {
+		return null;
+	}
 
-    @Override
-    public void setTldNamespaceAware(boolean arg0) {
+	@Override
+	public void setWrapperClass(String s) {
 
-    }
+	}
 
-    @Override
-    public boolean getTldValidation() {
-        return false;
-    }
+	@Override
+	public boolean getXmlNamespaceAware() {
+		return false;
+	}
 
-    @Override
-    public void setTldValidation(boolean arg0) {
+	@Override
+	public void setXmlNamespaceAware(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getUseHttpOnly() {
-        return false;
-    }
+	@Override
+	public boolean getXmlValidation() {
+		return false;
+	}
 
-    @Override
-    public void setUseHttpOnly(boolean arg0) {
+	@Override
+	public void setXmlValidation(boolean b) {
 
-    }
+	}
 
-    @Override
-    public String getWrapperClass() {
-        return null;
-    }
+	@Override
+	public boolean getXmlBlockExternal() {
+		return false;
+	}
 
-    @Override
-    public void setWrapperClass(String arg0) {
+	@Override
+	public void setXmlBlockExternal(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getXmlNamespaceAware() {
-        return false;
-    }
+	@Override
+	public boolean getTldValidation() {
+		return false;
+	}
 
-    @Override
-    public void setXmlNamespaceAware(boolean arg0) {
+	@Override
+	public void setTldValidation(boolean b) {
 
-    }
+	}
 
-    @Override
-    public boolean getXmlValidation() {
-        return false;
-    }
+	@Override
+	public JarScanner getJarScanner() {
+		return null;
+	}
 
-    @Override
-    public void setXmlValidation(boolean arg0) {
+	@Override
+	public void setJarScanner(JarScanner jarScanner) {
 
-    }
+	}
 
-    @Override
-    public void reload() {
+	@Override
+	public Authenticator getAuthenticator() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setLogEffectiveWebXml(boolean b) {
 
-    @Override
-    public void removeApplicationListener(String arg0) {
+	}
 
-    }
+	@Override
+	public boolean getLogEffectiveWebXml() {
+		return false;
+	}
 
-    @Override
-    public void removeApplicationParameter(String arg0) {
+	@Override
+	public InstanceManager getInstanceManager() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setInstanceManager(InstanceManager instanceManager) {
 
-    @Override
-    public void removeConstraint(SecurityConstraint arg0) {
+	}
 
-    }
+	@Override
+	public void setContainerSciFilter(String s) {
 
-    @Override
-    public void removeErrorPage(ErrorPage arg0) {
+	}
 
-    }
+	@Override
+	public String getContainerSciFilter() {
+		return null;
+	}
 
-    @Override
-    public void removeFilterDef(FilterDef arg0) {
+	@Override
+	public void addApplicationListener(String s) {
 
-    }
+	}
 
-    @Override
-    public void removeFilterMap(FilterMap arg0) {
+	@Override
+	public void addApplicationParameter(ApplicationParameter applicationParameter) {
 
-    }
+	}
 
-    @Override
-    public void removeInstanceListener(String arg0) {
+	@Override
+	public void addConstraint(SecurityConstraint securityConstraint) {
 
-    }
+	}
 
-    @Override
-    public void removeMimeMapping(String arg0) {
+	@Override
+	public void addErrorPage(ErrorPage errorPage) {
 
-    }
+	}
 
-    @Override
-    public void removeParameter(String arg0) {
+	@Override
+	public void addFilterDef(FilterDef filterDef) {
 
-    }
+	}
 
-    @Override
-    public void removeRoleMapping(String arg0) {
+	@Override
+	public void addFilterMap(FilterMap filterMap) {
 
-    }
+	}
 
-    @Override
-    public void removeSecurityRole(String arg0) {
+	@Override
+	public void addFilterMapBefore(FilterMap filterMap) {
 
-    }
+	}
 
-    @Override
-    public void removeServletMapping(String arg0) {
+	@Override
+	public void addInstanceListener(String s) {
 
-    }
+	}
 
-    //@Override
-    public void removeTaglib(String arg0) {
+	@Override
+	public void addLocaleEncodingMappingParameter(String s, String s1) {
 
-    }
+	}
 
-    @Override
-    public void removeWatchedResource(String arg0) {
+	@Override
+	public void addMimeMapping(String s, String s1) {
 
-    }
+	}
 
-    @Override
-    public void removeWelcomeFile(String arg0) {
+	@Override
+	public void addParameter(String s, String s1) {
 
-    }
+	}
 
-    @Override
-    public void removeWrapperLifecycle(String arg0) {
+	@Override
+	public void addRoleMapping(String s, String s1) {
 
-    }
+	}
 
-    @Override
-    public void removeWrapperListener(String arg0) {
+	@Override
+	public void addSecurityRole(String s) {
 
-    }
+	}
 
-    @Override
-    public String getRealPath(String s) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addServletMapping(String s, String s1) {
 
-    @Override
-    public int getEffectiveMajorVersion() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void setEffectiveMajorVersion(int i) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addServletMapping(String s, String s1, boolean b) {
 
-    @Override
-    public int getEffectiveMinorVersion() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void setEffectiveMinorVersion(int i) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addWatchedResource(String s) {
 
-    @Override
-    public JspConfigDescriptor getJspConfigDescriptor() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void addResourceJarUrl(URL url) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addWelcomeFile(String s) {
 
-    @Override
-    public void addServletContainerInitializer(ServletContainerInitializer servletContainerInitializer, Set<Class<?>> classes) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public boolean getPaused() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addWrapperLifecycle(String s) {
 
-    @Override
-    public boolean isServlet22() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public Set<String> addServletSecurity(ApplicationServletRegistration applicationServletRegistration, ServletSecurityElement servletSecurityElement) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addWrapperListener(String s) {
 
-    @Override
-    public String getResourceOnlyServlets() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void setResourceOnlyServlets(String s) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public Wrapper createWrapper() {
+		return null;
+	}
 
-    @Override
-    public boolean isResourceOnlyServlet(String s) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public String[] findApplicationListeners() {
+		return new String[0];
+	}
 
-    @Override
-    public String getBaseName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public ApplicationParameter[] findApplicationParameters() {
+		return new ApplicationParameter[0];
+	}
 
-    @Override
-    public String getWebappVersion() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public SecurityConstraint[] findConstraints() {
+		return new SecurityConstraint[0];
+	}
 
-    @Override
-    public void setWebappVersion(String s) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public ErrorPage findErrorPage(int i) {
+		return null;
+	}
 
-    @Override
-    public boolean getFireRequestListenersOnForwards() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public ErrorPage findErrorPage(String s) {
+		return null;
+	}
 
-    @Override
-    public void setFireRequestListenersOnForwards(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public ErrorPage[] findErrorPages() {
+		return new ErrorPage[0];
+	}
 
-    @Override
-    public boolean getPreemptiveAuthentication() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public FilterDef findFilterDef(String s) {
+		return null;
+	}
 
-    @Override
-    public void setPreemptiveAuthentication(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public FilterDef[] findFilterDefs() {
+		return new FilterDef[0];
+	}
 
-    @Override
-    public boolean getSendRedirectBody() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public FilterMap[] findFilterMaps() {
+		return new FilterMap[0];
+	}
 
-    @Override
-    public void setSendRedirectBody(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public String[] findInstanceListeners() {
+		return new String[0];
+	}
 
-    @Override
-    public void addPostConstructMethod(String s, String s2) {
+	@Override
+	public String findMimeMapping(String s) {
+		return null;
+	}
 
-    }
+	@Override
+	public String[] findMimeMappings() {
+		return new String[0];
+	}
 
-    @Override
-    public void addPreDestroyMethod(String s, String s2) {
+	@Override
+	public String findParameter(String s) {
+		return null;
+	}
 
-    }
+	@Override
+	public String[] findParameters() {
+		return new String[0];
+	}
 
-    @Override
-    public void removePostConstructMethod(String s) {
+	@Override
+	public String findRoleMapping(String s) {
+		return null;
+	}
 
-    }
+	@Override
+	public boolean findSecurityRole(String s) {
+		return false;
+	}
 
-    @Override
-    public void removePreDestroyMethod(String s) {
+	@Override
+	public String[] findSecurityRoles() {
+		return new String[0];
+	}
 
-    }
+	@Override
+	public String findServletMapping(String s) {
+		return null;
+	}
 
-    @Override
-    public String findPostConstructMethod(String s) {
-        return null;
-    }
+	@Override
+	public String[] findServletMappings() {
+		return new String[0];
+	}
 
-    @Override
-    public String findPreDestroyMethod(String s) {
-        return null;
-    }
+	@Override
+	public String findStatusPage(int i) {
+		return null;
+	}
 
-    @Override
-    public Map<String, String> findPostConstructMethods() {
-        return null;
-    }
+	@Override
+	public int[] findStatusPages() {
+		return new int[0];
+	}
 
-    @Override
-    public String getCharset(Locale locale) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public ThreadBindingListener getThreadBindingListener() {
+		return null;
+	}
 
-    @Override
-    public boolean getSwallowAbortedUploads() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void setThreadBindingListener(ThreadBindingListener threadBindingListener) {
 
-    @Override
-    public void setSwallowAbortedUploads(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public boolean getXmlBlockExternal() {
-        return false;
-    }
+	@Override
+	public String[] findWatchedResources() {
+		return new String[0];
+	}
 
-    @Override
-    public void setXmlBlockExternal(boolean b) {
+	@Override
+	public boolean findWelcomeFile(String s) {
+		return false;
+	}
 
-    }
+	@Override
+	public String[] findWelcomeFiles() {
+		return new String[0];
+	}
 
-    @Override
-    public JarScanner getJarScanner() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public String[] findWrapperLifecycles() {
+		return new String[0];
+	}
 
-    @Override
-    public void setJarScanner(JarScanner jarScanner) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public String[] findWrapperListeners() {
+		return new String[0];
+	}
 
-    @Override
-    public Authenticator getAuthenticator() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public boolean fireRequestInitEvent(ServletRequest servletRequest) {
+		return false;
+	}
 
-    @Override
-    public boolean getLogEffectiveWebXml() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public boolean fireRequestDestroyEvent(ServletRequest servletRequest) {
+		return false;
+	}
 
-    @Override
-    public void setLogEffectiveWebXml(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void reload() {
 
-    @Override
-    public InstanceManager getInstanceManager() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setInstanceManager(InstanceManager instanceManager) {
+	@Override
+	public void removeApplicationListener(String s) {
 
-    }
+	}
 
-    @Override
-    public String getContainerSciFilter() {
-        return null;
-    }
+	@Override
+	public void removeApplicationParameter(String s) {
 
-    @Override
-    public void setContainerSciFilter(String s) {
+	}
 
-    }
+	@Override
+	public void removeConstraint(SecurityConstraint securityConstraint) {
 
-    @Override
-    public void addApplicationListener(ApplicationListener applicationListener) {
+	}
 
-    }
+	@Override
+	public void removeErrorPage(ErrorPage errorPage) {
 
-    @Override
-    public void addChild(Container arg0) {
+	}
 
-    }
+	@Override
+	public void removeFilterDef(FilterDef filterDef) {
 
-    @Override
-    public void addContainerListener(ContainerListener arg0) {
+	}
 
-    }
+	@Override
+	public void removeFilterMap(FilterMap filterMap) {
 
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener arg0) {
+	}
 
-    }
+	@Override
+	public void removeInstanceListener(String s) {
 
-    @Override
-    public void backgroundProcess() {
+	}
 
-    }
+	@Override
+	public void removeMimeMapping(String s) {
 
-    @Override
-    public Container findChild(String arg0) {
-        return null;
-    }
+	}
 
-    @Override
-    public Container[] findChildren() {
-        return new Container[0];
-    }
+	@Override
+	public void removeParameter(String s) {
 
-    @Override
-    public ContainerListener[] findContainerListeners() {
-        return new ContainerListener[0];
-    }
+	}
 
-    @Override
-    public int getBackgroundProcessorDelay() {
-        return 0;
-    }
+	@Override
+	public void removeRoleMapping(String s) {
 
-    @Override
-    public void setBackgroundProcessorDelay(int arg0) {
+	}
 
-    }
+	@Override
+	public void removeSecurityRole(String s) {
 
-    @Override
-    public Cluster getCluster() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setCluster(Cluster arg0) {
+	@Override
+	public void removeServletMapping(String s) {
 
-    }
+	}
 
-    @Override
-    public String getInfo() {
-        return null;
-    }
+	@Override
+	public void removeWatchedResource(String s) {
 
-    @Override
-    public Loader getLoader() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setLoader(Loader arg0) {
+	@Override
+	public void removeWelcomeFile(String s) {
 
-    }
+	}
 
-    @Override
-    public Log getLogger() {
-        return null;
-    }
+	@Override
+	public void removeWrapperLifecycle(String s) {
 
-    @Override
-    public Manager getManager() {
-        return null;
-    }
+	}
 
-    @Override
-    public void setManager(Manager arg0) {
+	@Override
+	public void removeWrapperListener(String s) {
 
-    }
+	}
 
-    @Override
-    public Object getMappingObject() {
-        return null;
-    }
+	@Override
+	public String getRealPath(String s) {
+		return null;
+	}
 
-    @Override
-    public String getName() {
-        return null;
-    }
+	@Override
+	public int getEffectiveMajorVersion() {
+		return 0;
+	}
 
-    @Override
-    public void setName(String arg0) {
+	@Override
+	public void setEffectiveMajorVersion(int i) {
 
-    }
+	}
 
-    @Override
-    public ObjectName getObjectName() {
-        return null;
-    }
+	@Override
+	public int getEffectiveMinorVersion() {
+		return 0;
+	}
 
-    @Override
-    public Container getParent() {
-        return null;
-    }
+	@Override
+	public void setEffectiveMinorVersion(int i) {
 
-    @Override
-    public void setParent(Container arg0) {
+	}
 
-    }
+	@Override
+	public JspConfigDescriptor getJspConfigDescriptor() {
+		return null;
+	}
 
-    @Override
-    public ClassLoader getParentClassLoader() {
-        return null;
-    }
+	@Override
+	public void setJspConfigDescriptor(JspConfigDescriptor jspConfigDescriptor) {
 
-    @Override
-    public void setParentClassLoader(ClassLoader arg0) {
+	}
 
-    }
+	@Override
+	public void addServletContainerInitializer(ServletContainerInitializer servletContainerInitializer,
+	                                           Set<Class<?>> set) {
 
-    @Override
-    public Pipeline getPipeline() {
-        return null;
-    }
+	}
 
-    @Override
-    public Realm getRealm() {
-        return _realm;
-    }
+	@Override
+	public boolean getPaused() {
+		return false;
+	}
 
-    @Override
-    public void setRealm(Realm realm) {
-        _realm = realm;
-    }
+	@Override
+	public boolean isServlet22() {
+		return false;
+	}
 
-    @Override
-    public DirContext getResources() {
-        return null;
-    }
+	@Override
+	public Set<String> addServletSecurity(ServletRegistration.Dynamic dynamic,
+	                                      ServletSecurityElement servletSecurityElement) {
+		return null;
+	}
 
-    @Override
-    public void setResources(DirContext arg0) {
+	@Override
+	public void setResourceOnlyServlets(String s) {
 
-    }
+	}
 
-    @Override
-    public void invoke(Request arg0, Response arg1) throws IOException,
-            ServletException {
+	@Override
+	public String getResourceOnlyServlets() {
+		return null;
+	}
 
-    }
+	@Override
+	public boolean isResourceOnlyServlet(String s) {
+		return false;
+	}
 
-    @Override
-    public void removeChild(Container arg0) {
+	@Override
+	public String getBaseName() {
+		return null;
+	}
 
-    }
+	@Override
+	public void setWebappVersion(String s) {
 
-    @Override
-    public void removeContainerListener(ContainerListener arg0) {
+	}
 
-    }
+	@Override
+	public String getWebappVersion() {
+		return null;
+	}
 
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener arg0) {
+	@Override
+	public void setFireRequestListenersOnForwards(boolean b) {
 
-    }
+	}
 
-    @Override
-    public void fireContainerEvent(String s, Object o) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public boolean getFireRequestListenersOnForwards() {
+		return false;
+	}
 
-    @Override
-    public String getSessionCookieDomain() {
-        return null;
-    }
+	@Override
+	public void setPreemptiveAuthentication(boolean b) {
 
-    @Override
-    public void setSessionCookieDomain(String arg0) {
+	}
 
-    }
+	@Override
+	public boolean getPreemptiveAuthentication() {
+		return false;
+	}
 
-    @Override
-    public String getSessionCookieName() {
-        return null;
-    }
+	@Override
+	public void setSendRedirectBody(boolean b) {
 
-    @Override
-    public void setSessionCookieName(String arg0) {
+	}
 
-    }
+	@Override
+	public boolean getSendRedirectBody() {
+		return false;
+	}
 
-    @Override
-    public String getSessionCookiePath() {
-        return null;
-    }
+	@Override
+	public Loader getLoader() {
+		return null;
+	}
 
-    @Override
-    public void setSessionCookiePath(String arg0) {
+	@Override
+	public void setLoader(Loader loader) {
 
-    }
+	}
 
-    @Override
-    public boolean getSessionCookiePathUsesTrailingSlash() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public WebResourceRoot getResources() {
+		return null;
+	}
 
-    @Override
-    public void setSessionCookiePathUsesTrailingSlash(boolean b) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void setResources(WebResourceRoot webResourceRoot) {
 
-    @Override
-    public AccessLog getAccessLog() {
-        return null;
-    }
+	}
 
-    @Override
-    public int getStartStopThreads() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public Manager getManager() {
+		return null;
+	}
 
-    @Override
-    public void setStartStopThreads(int i) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void setManager(Manager manager) {
 
-    @Override
-    public void logAccess(Request arg0, Response arg1, long arg2, boolean arg3) {
+	}
 
-    }
+	@Override
+	public void setAddWebinfClassesResources(boolean b) {
 
-    //@Override
-    public boolean isDisableURLRewriting() {
-        return false;
-    }
+	}
 
-    //@Override
-    public void setDisableURLRewriting(boolean arg0) {
+	@Override
+	public boolean getAddWebinfClassesResources() {
+		return false;
+	}
 
-    }
+	@Override
+	public void addPostConstructMethod(String s, String s1) {
 
-    @Override
-    public void addLifecycleListener(LifecycleListener lifecycleListener) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public LifecycleListener[] findLifecycleListeners() {
-        return new LifecycleListener[0];  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void addPreDestroyMethod(String s, String s1) {
 
-    @Override
-    public void removeLifecycleListener(LifecycleListener lifecycleListener) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void init() throws LifecycleException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void removePostConstructMethod(String s) {
 
-    @Override
-    public void start() throws LifecycleException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public void stop() throws LifecycleException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public void removePreDestroyMethod(String s) {
 
-    @Override
-    public void destroy() throws LifecycleException {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+	}
 
-    @Override
-    public LifecycleState getState() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public String findPostConstructMethod(String s) {
+		return null;
+	}
 
-    @Override
-    public String getStateName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public String findPreDestroyMethod(String s) {
+		return null;
+	}
 
-    @Override
-    public Map<String, String> findPreDestroyMethods() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public Map<String, String> findPostConstructMethods() {
+		return null;
+	}
 
-    public Map<String, String> findPostConstructMethods(String clazz) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+	@Override
+	public Map<String, String> findPreDestroyMethods() {
+		return null;
+	}
 
+	@Override
+	public ClassLoader bind(boolean b, ClassLoader classLoader) {
+		return null;
+	}
+
+	@Override
+	public void unbind(boolean b, ClassLoader classLoader) {
+
+	}
+
+	@Override
+	public Object getNamingToken() {
+		return null;
+	}
+
+	@Override
+	public void setCookieProcessor(CookieProcessor cookieProcessor) {
+
+	}
+
+	@Override
+	public CookieProcessor getCookieProcessor() {
+		return null;
+	}
+
+	@Override
+	public Log getLogger() {
+		return null;
+	}
+
+	@Override
+	public ObjectName getObjectName() {
+		return null;
+	}
+
+	@Override
+	public String getDomain() {
+		return null;
+	}
+
+	@Override
+	public String getMBeanKeyProperties() {
+		return null;
+	}
+
+	@Override
+	public Pipeline getPipeline() {
+		return null;
+	}
+
+	@Override
+	public Cluster getCluster() {
+		return null;
+	}
+
+	@Override
+	public void setCluster(Cluster cluster) {
+
+	}
+
+	@Override
+	public int getBackgroundProcessorDelay() {
+		return 0;
+	}
+
+	@Override
+	public void setBackgroundProcessorDelay(int i) {
+
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
+	public void setName(String s) {
+
+	}
+
+	@Override
+	public Container getParent() {
+		return null;
+	}
+
+	@Override
+	public void setParent(Container container) {
+
+	}
+
+	@Override
+	public ClassLoader getParentClassLoader() {
+		return null;
+	}
+
+	@Override
+	public void setParentClassLoader(ClassLoader classLoader) {
+
+	}
+
+	@Override
+	public Realm getRealm() {
+		return _realm;
+	}
+
+	@Override
+	public void setRealm(Realm realm) {
+		_realm = realm;
+	}
+
+	@Override
+	public void backgroundProcess() {
+
+	}
+
+	@Override
+	public void addChild(Container container) {
+
+	}
+
+	@Override
+	public void addContainerListener(ContainerListener containerListener) {
+
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+
+	}
+
+	@Override
+	public Container findChild(String s) {
+		return null;
+	}
+
+	@Override
+	public Container[] findChildren() {
+		return new Container[0];
+	}
+
+	@Override
+	public ContainerListener[] findContainerListeners() {
+		return new ContainerListener[0];
+	}
+
+	@Override
+	public void removeChild(Container container) {
+
+	}
+
+	@Override
+	public void removeContainerListener(ContainerListener containerListener) {
+
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+
+	}
+
+	@Override
+	public void fireContainerEvent(String s, Object o) {
+
+	}
+
+	@Override
+	public void logAccess(Request request, Response response, long l, boolean b) {
+
+	}
+
+	@Override
+	public AccessLog getAccessLog() {
+		return null;
+	}
+
+	@Override
+	public int getStartStopThreads() {
+		return 0;
+	}
+
+	@Override
+	public void setStartStopThreads(int i) {
+
+	}
+
+	@Override
+	public File getCatalinaBase() {
+		return null;
+	}
+
+	@Override
+	public File getCatalinaHome() {
+		return null;
+	}
+
+	@Override
+	public void addLifecycleListener(LifecycleListener lifecycleListener) {
+
+	}
+
+	@Override
+	public LifecycleListener[] findLifecycleListeners() {
+		return new LifecycleListener[0];
+	}
+
+	@Override
+	public void removeLifecycleListener(LifecycleListener lifecycleListener) {
+
+	}
+
+	@Override
+	public void init() throws LifecycleException {
+
+	}
+
+	@Override
+	public void start() throws LifecycleException {
+
+	}
+
+	@Override
+	public void stop() throws LifecycleException {
+
+	}
+
+	@Override
+	public void destroy() throws LifecycleException {
+
+	}
+
+	@Override
+	public LifecycleState getState() {
+		return null;
+	}
+
+	@Override
+	public String getStateName() {
+		return null;
+	}
 }
-

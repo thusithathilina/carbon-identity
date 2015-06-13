@@ -87,7 +87,7 @@ public class NTLMAuthenticationGrantHandler extends AbstractAuthorizationGrantHa
                     request.addHeader("Authorization", securityPackage + " "
                             + token);
                     SimpleHttpResponse response = new SimpleHttpResponse();
-                    authenticated = _authenticator.authenticate(request, response, null);
+                    authenticated = _authenticator.authenticate(request, response);
 
                     if (log.isDebugEnabled()) {
                         if (authenticated) {

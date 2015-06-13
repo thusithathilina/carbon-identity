@@ -252,7 +252,11 @@ public class SimpleServletContext implements ServletContext {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
+	@Override public String getVirtualServerName() {
+		return null;
+	}
+
+	@Override
     public Enumeration<String> getServletNames() {
         return null;
     }
